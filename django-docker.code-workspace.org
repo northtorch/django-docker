@@ -1,0 +1,84 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"python.linting.enabled": true,
+		"python.linting.lintOnSave": true,
+		"python.linting.flake8Path": "${workspaceFolder}/.venv/bin/flake8",
+		"python.linting.pylintEnabled": false,
+		"python.linting.flake8Enabled": true,
+		"python.linting.mypyEnabled": true,
+		"python.linting.mypyPath": "${workspaceFolder}/.venv/bin/mypy",
+		"python.formatting.provider": "black",
+		"editor.formatOnSave": true,
+		"editor.codeActionsOnSave": {
+			"source.organizeImports": true
+		},
+		"[html]": {
+			"editor.formatOnSave": false
+		},
+		"[JSON]": {
+			"editor.formatOnSave": false
+		},
+		"python.testing.cwd": "${workspaceFolder}",
+		"python.testing.pytestArgs": [
+			"."
+		],
+		"python.testing.unittestEnabled": false,
+		"python.testing.pytestEnabled": true,
+		"python.autoComplete.extraPaths": [
+			"${workspaceFolder}"
+		],
+		"python.analysis.extraPaths": [
+			"${workspaceFolder}"
+		],
+		"python.linting.flake8Args": [
+			"--max-line-length=119",
+			"--ignore=E203,W503",
+			"--max-cognitive-complexity=15",
+		],
+		"python.linting.mypyArgs": [
+			"--show-column-numbers",
+			"--show-error-context",
+			"--ignore-missing-imports",
+			"--check-untyped-defs",
+			"--disallow-untyped-defs",
+			"--warn-return-any",
+			"--warn-unused-configs",
+			"--warn-redundant-casts",
+			"--exclude",
+			"''/test_*\\.py$''",
+		],
+	},
+	"extensions": {
+		"recommendations": [
+			"ms-python.python",
+			"njpwerner.autodocstring",
+			"ms-toolsai.jupyter",
+			"ms-toolsai.jupyter-renderers",
+			"ms-python.vscode-pylance",
+		]
+	},
+	"launch": {
+		"configurations": [
+			{
+				"name": "Python: Django",
+				"type": "python",
+				"request": "launch",
+				"program": "${workspaceFolder}/manage.py",
+				"args": [
+					"runserver",
+					"--noreload",
+					//"--nothreading",
+					"127.0.0.1:8000"
+				],
+				"justMyCode": true,
+				"django": true
+			},
+		],
+		"compounds": []
+	}
+}

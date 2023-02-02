@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load md5url %}
+{% block content %}
+<h4>現在のカウンタ：{{current_count}}</h4>
+<form action="" method="post">
+    {% csrf_token %}
+    <button type="submit">インクリメント</button>
+</form>
+{% endblock %}
