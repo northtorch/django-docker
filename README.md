@@ -79,7 +79,7 @@ DB上に数値を格納し、インクリメントしていく機能のみを持
 1. djangoのSECRET_KEYを作成
 
     ```
-    python get_random_secret_key.py
+    poetry run python get_random_secret_key.py
     ```
 
     生成された SECRET_KEY を local_settings.py 内の SECRET_KEY に上書き
@@ -106,7 +106,7 @@ DB上に数値を格納し、インクリメントしていく機能のみを持
 1. migrationの実行
 
     ```
-    python manage.py migrate
+    poetry run python manage.py migrate
     ```
 
 # 機能
