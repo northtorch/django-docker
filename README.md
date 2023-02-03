@@ -52,16 +52,21 @@ DB上に数値を格納し、インクリメントしていく機能のみを持
 
 1. Python仮想環境を構築する
 
-    poetryで、pyenvでインストールしたPythonを指定する
-    
-    ```
-    poetry env use 3.10.8
-    ```
-
     仮想環境をプロジェクト配下に作成するようにpoetryを設定
 
     ```
     poetry config virtualenvs.in-project true
+    ```
+
+    ローカルpythonバージョンを指定する
+    ```
+    pyenv local 3.10.8
+    ```
+
+    poetryで、pyenvでインストールしたPythonを指定する
+    
+    ```
+    poetry env use 3.10.8
     ```
 
     必要なパッケージをインストール
