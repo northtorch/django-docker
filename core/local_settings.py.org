@@ -78,4 +78,4 @@ LOGGING = {
     }
 }
 
-STATIC_ROOT = '/djangodockerstatic'
+STATIC_ROOT = os.path.join(FILE_BASE_DIR, 'staticfiles')

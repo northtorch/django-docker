@@ -1,0 +1,20 @@
+# uWSGI を systemd のサービスとして動かすための設定
+#
+# 置き場所: /etc/systemd/system/django-docker.service
+# 前提    : リポジトリを /home/ubuntu/django-docker に clone し、uv sync --group server 済み
+#           環境変数を /etc/django-docker.env に書いてある（deploy/django-docker.env.example を参照）
+# ユーザー名やパスが違う場合は、User と各パスを書き換える
+
+[Unit]
+Description=django-docker (uWSGI)
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/django-docker
+EnvironmentFile=/etc/django-docker.env
+ExecStart=/home/ubuntu/django-docker/.venv/bin/uwsgi --ini deploy/uwsgi.ini --socket 127.0.0.1:8001
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
