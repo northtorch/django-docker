@@ -1,72 +1,48 @@
-[tool.poetry]
-name = "Django-Docker"
-version = "0.0.1"
-description = ""
-authors = [""]
+[project]
+name = "django-docker"
+version = "0.1.0"
+description = "DB 上の数値をインクリメントするだけの Django サンプル"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "django>=5.2,<5.3",
+    "django-debug-toolbar>=5.0",
+    "django-static-md5url>=0.1",
+]
 
-[tool.poetry.dependencies]
-python = ">=3.10,<3.11"
-wheel = "^0.37.0"
-django = "^4.1.6"
-django-debug-toolbar = "^3.8.1"
-django-static-md5url = "^0.1"
+[dependency-groups]
+dev = [
+    "mypy>=1.10",
+    "pytest>=8.0",
+    "pytest-django>=4.8",
+    "ruff>=0.6",
+]
+# サーバ・Docker で uWSGI を使うときだけ入れる（ビルドに C コンパイラが要る）
+server = [
+    "uwsgi>=2.0.28",
+]
 
-[tool.poetry.dev-dependencies]
-black = "^21.11b1"
-isort = "^5.10.1"
-pyproject-flake8 = "^0.0.1-alpha.2"
-flake8-bugbear = "^21.9.2"
-mypy = "^0.910"
-pytest = "^6.2.5"
-autopep8 = "^1.6.0"
-pylint = "^2.11.1"
+[tool.uv]
+package = false
 
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.flake8]
-max-line-length = 119
-select = "C,E,F,W,B"
-ignore = "E203,W503"
-
-[tool.black]
+[tool.ruff]
 line-length = 119
-exclude = '''
-(
-    migrations
-    | .mypy_cache
-    | .pytest_cache
-    | .tox
-    | .venv
-    | dist
-    | log
-    | media
-    | reload
-    | results
-    | static
-    | conf
-)
-'''
+extend-exclude = ["migrations", "log", "reload", "static"]
+
+[tool.ruff.lint]
+select = ["C", "E", "F", "W", "B", "I"]
 
 [tool.mypy]
-# common
-python_version = 3.9
-show_column_numbers  = true
+python_version = "3.12"
+show_column_numbers = true
 show_error_context = true
 ignore_missing_imports = true
 check_untyped_defs = true
 disallow_untyped_defs = true
-# warning
 warn_return_any = true
 warn_unused_configs = true
 warn_redundant_casts = true
-# exclude
 exclude = "/test_\\*.py$"
 
-[tool.isort]
-profile = "black"
-line_length = 119
-
 [tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "core.settings_for_pytest"
 addopts = "-p no:warnings"

@@ -1,10 +1,19 @@
 # -----------------------------------------------------------------------------
-# local_settings.py for docker environment
+# local_settings.py for production environment (server / docker)
+#
+# サーバと Docker のどちらでも、このファイルを local_settings.py としてコピーして使う。
+# 環境ごとに変わる値は、環境変数（または /run/secrets/<名前>）から読み込む。
+#
+#   SECRET_KEY                  必須。get_random_secret_key.py で作る
+#   DJANGO_ALLOWED_HOSTS        アクセスを受け付けるドメイン名（カンマ区切り）
+#   DJANGO_CSRF_TRUSTED_ORIGINS https でフォームを送るときの送信元（カンマ区切り。例: https://example.com）
+#   DJANGO_DB_DIR               SQLite のファイルを置くディレクトリ
+#   DJANGO_LOG_DIR              ログを置くディレクトリ
+#   DJANGO_STATIC_ROOT          collectstatic で静的ファイルを集めるディレクトリ
 # -----------------------------------------------------------------------------
 import os
-from .base_settings import INSTALLED_APPS, MIDDLEWARE
+
 FILE_BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-LOG_BASE_DIR = '/var/log/django'
 
 
 def manage_sensitive(name):
@@ -22,12 +31,22 @@ def manage_sensitive(name):
         return v2
     return None
 
+
+def env_list(name, default):
+    """カンマ区切りの環境変数をリストにする
+    """
+    value = os.getenv(name, default)
+    return [v.strip() for v in value.split(',') if v.strip()]
+
+
 DEBUG = False
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = manage_sensitive('SECRET_KEY')
 
-ALLOWED_HOSTS = ['*']  # サイトドメイン(またはIPアドレス)
+ALLOWED_HOSTS = env_list('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1')  # サイトドメイン(またはIPアドレス)
+
+CSRF_TRUSTED_ORIGINS = env_list('DJANGO_CSRF_TRUSTED_ORIGINS', '')
 
 ADMINS = (
     ('admin', 'admin@northtorch.co.jp'),
@@ -36,11 +55,11 @@ ADMINS = (
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(FILE_BASE_DIR, 'db', 'db.sqlite3'),
+        'NAME': os.path.join(os.getenv('DJANGO_DB_DIR', os.path.join(FILE_BASE_DIR, 'db')), 'db.sqlite3'),
     }
 }
 
-LOGPATH = os.path.join(LOG_BASE_DIR, 'django.log')
+LOGPATH = os.path.join(os.getenv('DJANGO_LOG_DIR', os.path.join(FILE_BASE_DIR, 'log')), 'django.log')
 
 LOGGING = {
     'version': 1,
@@ -79,4 +98,4 @@ LOGGING = {
     }
 }
 
-STATIC_ROOT = '/djangodockerstatic'
+STATIC_ROOT = os.getenv('DJANGO_STATIC_ROOT', os.path.join(FILE_BASE_DIR, 'staticfiles'))

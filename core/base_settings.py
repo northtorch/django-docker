@@ -49,7 +49,6 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             os.path.join(BASE_DIR, 'templates'),
-            os.path.join(BASE_DIR, 'templates', 'allauth'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -61,11 +60,6 @@ TEMPLATES = [
         },
     },
 ]
-
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-)
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
@@ -109,11 +103,7 @@ TIME_ZONE = 'Asia/Tokyo'
 
 USE_I18N = True
 
-USE_L10N = True
-
 USE_TZ = True
-
-AUTH_USER_MODEL = 'user.NTUser'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
